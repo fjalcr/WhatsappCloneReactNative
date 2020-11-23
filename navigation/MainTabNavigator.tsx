@@ -6,8 +6,8 @@ import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { MainTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import ChatsScreen from '../screens/ChatsScreen';
+import { MainTabParamList, TabChatParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 import { Fontisto } from '@expo/vector-icons';
 
@@ -44,11 +44,11 @@ export default function TopTabNavigator() {
       />
       <MainTab.Screen
         name="Chats"
-        component={TabTwoNavigator}
+        component={TabChatNavigator}
       />
       <MainTab.Screen
         name="Status"
-        component={TabTwoNavigator}
+        component={TabOneNavigator}
       />
       <MainTab.Screen
         name="Calls"
@@ -66,6 +66,20 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
+const TabChatsStack = createStackNavigator<TabChatParamList>();
+
+function TabChatNavigator() {
+  return (
+    <TabChatsStack.Navigator>
+      <TabChatsStack.Screen
+        name="ChatScreen"
+        component={ChatsScreen}
+        options={{ headerShown: false }}
+      />
+    </TabChatsStack.Navigator>
+  );
+}
+
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
@@ -75,7 +89,7 @@ function TabOneNavigator() {
         name="TabOneScreen"
         component={TabOneScreen}
         options={{ headerTitle: 'Tab One Title' }}
-      />
+        />
     </TabOneStack.Navigator>
   );
 }
@@ -87,7 +101,7 @@ function TabTwoNavigator() {
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
-        component={TabTwoScreen}
+        component={TabOneScreen}
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>

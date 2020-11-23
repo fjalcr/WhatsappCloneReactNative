@@ -1,7 +1,7 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { ColorSchemeName, View, ViewComponent } from 'react-native';
+import { ColorSchemeName, View } from 'react-native';
 import  Colors  from '../constants/Colors';
 import {Octicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -43,7 +43,7 @@ function RootNavigator() {
         name="Root" 
         options={
           {
-            title:"WhatsApp",
+            title:"WhatsAppp",
             headerRight:() => (
               <View style={{
                 flexDirection: "row",
