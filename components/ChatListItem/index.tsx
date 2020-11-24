@@ -1,4 +1,3 @@
-import { createIconSetFromFontello } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback, UIManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';

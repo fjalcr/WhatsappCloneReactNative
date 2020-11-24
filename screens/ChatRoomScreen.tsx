@@ -3,6 +3,7 @@ import { View, Text, FlatList, ImageBackground } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Chats from '../data/Chats';
 import  ChatMessage  from '../components/ChatMessage';
+import  InputBox  from '../components/InputBox';
 import BG from '../assets/images/BG.png';
 
 const ChatRoomScreen = () => {
@@ -15,6 +16,7 @@ const ChatRoomScreen = () => {
                 keyExtractor={(item) => item.id}
                 inverted
             />
+            <InputBox />
         </ImageBackground>
     );
 };
