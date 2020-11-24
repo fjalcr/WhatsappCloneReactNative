@@ -6,6 +6,7 @@ import  Colors  from '../constants/Colors';
 import {Octicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5} from '@expo/vector-icons';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
+import ContactsScreen from '../screens/ContactsScreen';
 import { RootStackParamList } from '../types';
 import MainTabNavigator from './MainTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -91,6 +92,38 @@ function RootNavigator(goBack) {
                   <MaterialIcons name="call" size={20} color="white" /> 
                   <MaterialCommunityIcons name="dots-vertical" size={20} color="white" /> 
                 </View>      
+              )
+            }
+          )
+        }
+      />
+      <Stack.Screen 
+        name="Contacts" 
+        component={ContactsScreen} 
+        options={({ route, navigation}) => (
+            { 
+              headerLeft:() => (
+                <TouchableOpacity onPress={navigation.goBack} >
+                  <View style={{
+                    flexDirection: "row",
+                    width:100,
+                    alignItems:"center",
+                  }}>
+                      <FontAwesome5 name="arrow-left" size={16} color="white" style={{marginLeft:15}} />
+                  </View>
+                </TouchableOpacity>
+              ),
+              title: "Contacts",
+              headerRight:() => (
+                <View style={{
+                  flexDirection: "row",
+                  width:60,
+                  justifyContent:"space-between",
+                  marginRight:10
+                }}>
+                  <Octicons name="search" size={22} color="white" />
+                  <MaterialCommunityIcons name="dots-vertical" size={22} color="white" />
+                </View>
               )
             }
           )

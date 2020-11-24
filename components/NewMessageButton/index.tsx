@@ -1,12 +1,19 @@
 import React from 'react';
-import { View } from 'react-native';
-import {MaterialCommunityIcons, FontAwesome5, Fontisto} from '@expo/vector-icons';
+import { View, TouchableWithoutFeedback } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import Styles from './styles';
 const NewMessageButton = () => {
+    const navigation = useNavigation()
+    const onClick = () => {
+        navigation.navigate('Contacts')
+      }
     return (
-        <View style={Styles.floating}>
-            <MaterialCommunityIcons name="android-messages" size={24} color="white" />
-        </View>
+        <TouchableWithoutFeedback onPress={onClick} >
+            <View style={Styles.floating}>
+                <MaterialCommunityIcons name="android-messages" size={28} color="white" />
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
