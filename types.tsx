@@ -31,11 +31,15 @@ export type User = {
 export type Message = {
   id: String,
   content: String,
-  createdAt: String
+  createdAt: String,
+  user: User
 }
 
 export type ChatRoom = {
   id: String,
   users: [User],
   lastMessage: Message
+}
+
+export type Router = {
 }

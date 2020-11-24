@@ -1,10 +1,11 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { ColorSchemeName, View } from 'react-native';
+import { ColorSchemeName, View, TouchableOpacity, Image} from 'react-native';
 import  Colors  from '../constants/Colors';
-import {Octicons, MaterialCommunityIcons} from '@expo/vector-icons';
+import {Octicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5} from '@expo/vector-icons';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
 import { RootStackParamList } from '../types';
 import MainTabNavigator from './MainTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -26,7 +27,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 //bottom tab navigator
-function RootNavigator() {
+function RootNavigator(goBack) {
   return (
     <Stack.Navigator screenOptions={{ 
       headerStyle:{
@@ -39,7 +40,8 @@ function RootNavigator() {
       headerTitleAlign: 'left'
 
     }}>
-      <Stack.Screen 
+      <Stack.Screen
+        
         name="Root" 
         options={
           {
@@ -58,6 +60,41 @@ function RootNavigator() {
           }
         }
         component={MainTabNavigator}
+      />
+      
+      <Stack.Screen 
+        name="ChatRoom" 
+        component={ChatRoomScreen} 
+        options={({ route, navigation}) => (
+            { 
+              headerLeft:() => (
+                <TouchableOpacity onPress={navigation.goBack} >
+                  <View style={{
+                    flexDirection: "row",
+                    width:100,
+                    alignItems:"center",
+                  }}>
+                      <FontAwesome5 name="arrow-left" size={16} color="white" style={{marginLeft:10}} /> 
+                      <Image style={{width:35, height:35, marginLeft:5, borderRadius:35}} source={{uri: route.params.image}} />
+                  </View>
+                </TouchableOpacity>
+              ),
+              title: route.params.name,
+              headerRight:() => (
+                <View style={{
+                  flexDirection: "row",
+                  width:100,
+                  justifyContent:"space-between",
+                  marginRight:10
+                }}>      
+                  <FontAwesome5 name="video" size={20} color="white" /> 
+                  <MaterialIcons name="call" size={20} color="white" /> 
+                  <MaterialCommunityIcons name="dots-vertical" size={20} color="white" /> 
+                </View>      
+              )
+            }
+          )
+        }
       />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
     </Stack.Navigator>
