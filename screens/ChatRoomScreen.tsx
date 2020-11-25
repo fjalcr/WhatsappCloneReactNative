@@ -15,8 +15,9 @@ const ChatRoomScreen = () => {
                 renderItem={({item}) => <ChatMessage message={item} />  }
                 keyExtractor={(item) => item.id}
                 inverted
-            />
+                />
             <InputBox />
+            
         </ImageBackground>
     );
 };
