@@ -1,7 +1,6 @@
 export default [{
     id: 'u1',
     status: "Hello there, how are you",
-    status: "Hello there, how are you",
     name: 'Vadim',
     imageUri: 'https://picsum.photos/200/300',
   }, {
