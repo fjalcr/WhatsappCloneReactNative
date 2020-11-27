@@ -1,0 +1,15 @@
+projects:
+  whatsappclonereactna:
+    schemaPath: ./amplify/backend/api/whatsappclonereactna/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/API.ts
+        docsFilePath: /graphql
+extensions:
+  amplify:
+    version: 3
