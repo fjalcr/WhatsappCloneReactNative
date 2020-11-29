@@ -3,52 +3,51 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
+import { Fontisto } from "@expo/vector-icons";
+
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
 import ChatsScreen from '../screens/ChatsScreen';
-import { MainTabParamList, TabChatParamList, TabOneParamList, TabTwoParamList } from '../types';
-
-import { Fontisto } from '@expo/vector-icons';
+import TabTwoScreen from '../screens/TabTwoScreen';
+import { MainTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const MainTab = createMaterialTopTabNavigator<MainTabParamList>();
 
-export default function TopTabNavigator() {
+export default function MainTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <MainTab.Navigator
       initialRouteName="Chats"
-      tabBarOptions={{ 
+      tabBarOptions={{
         activeTintColor: Colors[colorScheme].background,
-        labelStyle:{
-          fontWeight:"bold"
+        style: {
+          backgroundColor: Colors[colorScheme].tint,
         },
-        style:{
-          backgroundColor: Colors[colorScheme].tint
-        },
-        indicatorStyle:{
+        indicatorStyle: {
           backgroundColor: Colors[colorScheme].background,
-          height:3
+          height: 4,
         },
-        showIcon:true
-        
+        labelStyle: {
+          fontWeight: 'bold'
+        },
+        showIcon: true,
       }}>
       <MainTab.Screen
         name="Camera"
         component={TabOneNavigator}
         options={{
-          tabBarLabel: () => null,
-          tabBarIcon: ({ color }) => <Fontisto name="camera" size={18} color={color} />
+          tabBarIcon: ({ color }) => <Fontisto name="camera" color={color} size={18} />,
+          tabBarLabel: () => null
         }}
       />
       <MainTab.Screen
         name="Chats"
-        component={TabChatNavigator}
+        component={ChatsScreen}
       />
       <MainTab.Screen
         name="Status"
-        component={TabOneNavigator}
+        component={TabTwoNavigator}
       />
       <MainTab.Screen
         name="Calls"
@@ -66,20 +65,6 @@ function TabBarIcon(props: { name: string; color: string }) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabChatsStack = createStackNavigator<TabChatParamList>();
-
-function TabChatNavigator() {
-  return (
-    <TabChatsStack.Navigator>
-      <TabChatsStack.Screen
-        name="ChatScreen"
-        component={ChatsScreen}
-        options={{ headerShown: false }}
-      />
-    </TabChatsStack.Navigator>
-  );
-}
-
 const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
@@ -87,9 +72,9 @@ function TabOneNavigator() {
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
-        component={TabOneScreen}
+        component={ChatsScreen}
         options={{ headerTitle: 'Tab One Title' }}
-        />
+      />
     </TabOneStack.Navigator>
   );
 }
@@ -101,7 +86,7 @@ function TabTwoNavigator() {
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
-        component={TabOneScreen}
+        component={TabTwoScreen}
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>

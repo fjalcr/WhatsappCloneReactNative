@@ -1,18 +1,18 @@
 import { StyleSheet } from 'react-native';
-import Color from '../../constants/Colors';
+import Colors from "../../constants/Colors";
 
 const styles = StyleSheet.create({
-    floating:{
-        backgroundColor: Color.light.tint,
-        padding:15,
-        borderRadius:100,
-        position:'absolute',
-        bottom: 30,
-        right: 30,
-        transform: [
-            { rotateY: "180deg" }
-          ],
-    }
+  container: {
+    backgroundColor: Colors.light.tint,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  }
 })
 
 export default styles;

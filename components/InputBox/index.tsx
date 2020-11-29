@@ -1,53 +1,121 @@
-import React, {useState} from 'react';
-import { View, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
-import {MaterialCommunityIcons, FontAwesome5, Fontisto} from '@expo/vector-icons';
-import Styles from './styles';
-const InputBox = () => {
-    const  [inputText, setInputText]  = useState('');
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform,} from "react-native";
+import styles from './styles';
 
-    const messageSend = () => {
-        console.warn('message send');
-        setInputText('')
-        
-    }
-    const microPress = () => {
-        console.warn('miclrophone press');
+import {
+  API,
+  Auth,
+  graphqlOperation,
+} from 'aws-amplify';
 
+import {
+  createMessage,
+  updateChatRoom,
+} from '../../graphql/mutations';
+
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  FontAwesome5,
+  Entypo,
+  Fontisto,
+} from '@expo/vector-icons';
+
+const InputBox = (props) => {
+
+  const { chatRoomID } = props;
+
+  const [message, setMessage] = useState('');
+  const [myUserId, setMyUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      setMyUserId(userInfo.attributes.sub);
     }
-    const handlerPress = () => {
-        !inputText ? microPress() : messageSend()
+    fetchUser();
+  }, [])
+
+  const onMicrophonePress = () => {
+    console.warn('Microphone')
+  }
+
+  const updateChatRoomLastMessage = async (messageId: string) => {
+    try {
+      await API.graphql(
+        graphqlOperation(
+          updateChatRoom, {
+            input: {
+              id: chatRoomID,
+              lastMessageID: messageId,
+            }
+          }
+        )
+      );
+    } catch (e) {
+      console.log(e);
     }
-    return (
-        <KeyboardAvoidingView 
-        behavior={Platform.OS == "ios" ? 'padding' : "height"} 
-        keyboardVerticalOffset={65}>
-        <View style={Styles.container}>
-            <View style={Styles.leftContainer}>
-                <FontAwesome5 name="laugh-beam" size={20} color="grey" style={Styles.icon} />
-                <TextInput 
-                    placeholder="type samething..." 
-                    style={Styles.input} 
-                    multiline 
-                    value={inputText}  
-                    onChangeText={setInputText}
-                />
-                <FontAwesome5 name="paperclip" size={20} color="grey" style={Styles.icon} />
-                {
-                    inputText == ''
-                    ?<Fontisto name="camera" size={20} color="grey" style={Styles.icon} />
-                    :null
-                }
-            </View>
-            <View style={Styles.rightContainer}>
-                <MaterialCommunityIcons 
-                    onPress={() => handlerPress()} 
-                    name={`${inputText == '' ? 'microphone' : 'send'}`} 
-                    size={24} 
-                    color="white"/>
-            </View>
+  }
+
+  const onSendPress = async () => {
+    try {
+      const newMessageData = await API.graphql(
+        graphqlOperation(
+          createMessage, {
+            input: {
+              content: message,
+              userID: myUserId,
+              chatRoomID
+            }
+          }
+        )
+      )
+
+      await updateChatRoomLastMessage(newMessageData.data.createMessage.id)
+    } catch (e) {
+      console.log(e);
+    }
+
+    setMessage('');
+  }
+
+  const onPress = () => {
+    if (!message) {
+      onMicrophonePress();
+    } else {
+      onSendPress();
+    }
+  }
+
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
+      style={{width: '100%'}}
+    >
+      <View style={styles.container}>
+      <View style={styles.mainContainer}>
+        <FontAwesome5 name="laugh-beam" size={24} color="grey" />
+        <TextInput
+          placeholder={"Type a message"}
+          style={styles.textInput}
+          multiline
+          value={message}
+          onChangeText={setMessage}
+        />
+        <Entypo name="attachment" size={24} color="grey" style={styles.icon} />
+        {!message && <Fontisto name="camera" size={24} color="grey" style={styles.icon} />}
+      </View>
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.buttonContainer}>
+          {!message
+            ? <MaterialCommunityIcons name="microphone" size={28} color="white" />
+            : <MaterialIcons name="send" size={28} color="white" />}
         </View>
-        </KeyboardAvoidingView>
-    );
-};
+      </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
+  )
+}
 
 export default InputBox;

@@ -1,41 +1,36 @@
 import React from 'react';
-import { Message } from '../../types';
-import { Text, View } from 'react-native';
-import Styles from './styles';
-import { formatDate } from '../../helpers';
+import {Text, View} from 'react-native';
+import { Message } from "../../types";
+import moment from "moment";
+import styles from './styles';
 
-
-export type ChatMessagesProps = {
-    message: Message
+export type ChatMessageProps = {
+  message: Message;
+  myId: String,
 }
 
-const ChatMessage = (props: ChatMessagesProps) => {
-    const { message } = props
-    
-    const isMyMessage = () => {
-        return message.user.id === 'u1'
-    }
-    console.log(isMyMessage())
-    return (
-        <View style={Styles.container}>
-            <View style={[
-                    Styles.messageBox,
-                    isMyMessage() ? Styles.sender : Styles.reseiver
-                ]}>
-                {
-                    !isMyMessage()
-                    ?<Text style={Styles.name}>{ message.user.name }</Text>
-                    :null
-                }
-                <Text style={Styles.message}>
-                    { message.content }
-                </Text>
-                <Text style={Styles.time}>
-                    { formatDate(message.createdAt) }
-                </Text>
-            </View>
-        </View>
-    );
-};
+const ChatMessage = (props: ChatMessageProps) => {
+  const { message, myId } = props;
+  console.log(props)
+  const isMyMessage = () => {
+    return message.userID === myId;
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={[
+        styles.messageBox, {
+          backgroundColor: isMyMessage() ? '#DCF8C5' : 'white',
+          marginLeft: isMyMessage() ? 50 : 0,
+          marginRight: isMyMessage() ? 0 : 50,
+        }
+      ]}>
+        {!isMyMessage() && <Text style={styles.name}>{message.user.name}</Text>}
+        <Text style={styles.message}>{message.content}</Text>
+        <Text style={styles.time}>{moment(message.createdAt).fromNow()}</Text>
+      </View>
+    </View>
+  )
+}
 
 export default ChatMessage;
